@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-@Entity()
+@Entity({ synchronize: false })
 export class AbstractBaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

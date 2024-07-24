@@ -1,4 +1,11 @@
-import { Injectable, CanActivate, ExecutionContext, UnauthorizedException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  UnauthorizedException,
+  HttpStatus,
+  ForbiddenException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import appConfig from '../../config/auth.config';
@@ -27,9 +34,9 @@ export class AuthGuard implements CanActivate {
     }
 
     if (!token) {
-      throw new UnauthorizedException({
+      throw new ForbiddenException({
         message: UNAUTHENTICATED_MESSAGE,
-        status_code: HttpStatus.UNAUTHORIZED,
+        status_code: HttpStatus.FORBIDDEN,
       });
     }
 
@@ -39,17 +46,17 @@ export class AuthGuard implements CanActivate {
       });
 
       if (this.isExpiredToken(payload)) {
-        throw new UnauthorizedException({
+        throw new ForbiddenException({
           message: UNAUTHENTICATED_MESSAGE,
-          status_code: HttpStatus.UNAUTHORIZED,
+          status_code: HttpStatus.FORBIDDEN,
         });
       }
       request['user'] = payload;
       request['token'] = token;
     } catch {
-      throw new UnauthorizedException({
+      throw new ForbiddenException({
         message: UNAUTHENTICATED_MESSAGE,
-        status_code: HttpStatus.UNAUTHORIZED,
+        status_code: HttpStatus.FORBIDDEN,
       });
     }
     return true;
