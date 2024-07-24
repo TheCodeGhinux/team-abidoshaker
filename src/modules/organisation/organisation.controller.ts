@@ -27,12 +27,8 @@ export class OrganisationController {
   })
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateOrganisationDto: UpdateOrganisationDto) {
-    try {
-      const updatedOrg = await this.organisationService.update(id, updateOrganisationDto);
-      return { message: 'Product successfully updated', org: updatedOrg };
-    } catch (error) {
-      throw new HttpException(error.message, error.status || 500);
-    }
+    const updatedOrg = await this.organisationService.update(id, updateOrganisationDto);
+    return { message: 'Product successfully updated', org: updatedOrg };
   }
 
   @Delete(':id')
