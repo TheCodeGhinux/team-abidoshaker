@@ -16,6 +16,7 @@ import { OrganisationsModule } from './modules/organisations/organisations.modul
 import { AuthGuard } from './guards/auth.guard';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import authConfig from 'config/auth.config';
 
 @Module({
   providers: [
@@ -30,10 +31,6 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
           whitelist: true,
           forbidNonWhitelisted: true,
         }),
-    },
-    {
-      provide: 'APP_GUARD',
-      useClass: AuthGuard,
     },
   ],
   imports: [
