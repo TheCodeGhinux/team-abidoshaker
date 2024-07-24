@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException } from '@nestjs/common';
 import { OrganisationService } from './organisation.service';
-import { CreateOrganisationDto } from './dto/create-organisation.dto';
 import { UpdateOrganisationDto } from './dto/update-organisation.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -9,11 +8,6 @@ import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagg
 @Controller('organisation')
 export class OrganisationController {
   constructor(private readonly organisationService: OrganisationService) {}
-
-  @Post()
-  create(@Body() createOrganisationDto: CreateOrganisationDto) {
-    return this.organisationService.create(createOrganisationDto);
-  }
 
   @Get()
   findAll() {

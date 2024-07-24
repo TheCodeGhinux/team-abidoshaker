@@ -19,20 +19,8 @@ export class OrganisationService {
     private organisationRepository: Repository<Organisation>
   ) {}
 
-  create(createOrganisationDto: CreateOrganisationDto) {
-    return 'This action adds a new organisation';
-  }
-
   async findAll() {
-    try {
-      const orgs = await this.organisationRepository.find();
-      console.log(orgs);
-
-      return orgs;
-    } catch (error) {
-      console.log(error.message);
-    }
-    throw new Error(`Internal error`);
+    return 'This action adds a new organisation';
   }
 
   findOne(id: number) {
