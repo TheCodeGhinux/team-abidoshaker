@@ -1,7 +1,7 @@
 import { BeforeInsert, Column, Entity, OneToMany } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { AbstractBaseEntity } from '../../../entities/base.entity';
-import { Organisation } from '../../organisation/entities/organisation.entity';
+import { Organisation } from '../../../modules/organisations/entities/organisations.entity';
 
 export enum UserType {
   SUPER_ADMIN = 'super_admin',

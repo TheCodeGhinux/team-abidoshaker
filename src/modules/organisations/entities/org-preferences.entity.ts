@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { AbstractBaseEntity } from './../../../entities/base.entity';
-import { Organisation } from './organisation.entity';
+import { Organisation } from './organisations.entity';
 
 @Entity()
 export class OrganisationPreference extends AbstractBaseEntity {
