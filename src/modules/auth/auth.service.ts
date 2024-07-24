@@ -8,6 +8,7 @@ import {
 } from '../../helpers/SystemMessages';
 import { JwtService } from '@nestjs/jwt';
 import UserService from '../user/user.service';
+import { compare } from 'bcrypt';
 
 @Injectable()
 export default class AuthenticationService {
@@ -65,6 +66,66 @@ export default class AuthenticationService {
       };
     } catch (createNewUserError) {
       Logger.log('AuthenticationServiceError ~ createNewUserError ~', createNewUserError);
+      throw new HttpException(
+        {
+          message: ERROR_OCCURED,
+          status_code: HttpStatus.INTERNAL_SERVER_ERROR,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  async loginUser(body: any) {
+    try {
+      const userExists = await this.userService.getUserRecord({
+        identifier: body.email,
+        identifierType: 'email',
+      });
+
+      if (!userExists) {
+        return {
+          status_code: HttpStatus.NOT_FOUND,
+          message: 'User not found',
+        };
+      }
+
+      // Verify password
+      const isPasswordValid = await compare(body.password, userExists.password);
+      if (!isPasswordValid) {
+        return {
+          status_code: HttpStatus.UNAUTHORIZED,
+          message: 'Invalid credentials',
+        };
+      }
+
+      // Generate JWT token
+      const accessToken = this.jwtService.sign({
+        email: userExists.email,
+        first_name: userExists.first_name,
+        last_name: userExists.last_name,
+        sub: userExists.id,
+      });
+
+      const responsePayload = {
+        token: accessToken,
+        user: {
+          first_name: userExists.first_name,
+          last_name: userExists.last_name,
+          email: userExists.email,
+          created_at: userExists.created_at,
+        },
+      };
+
+      return {
+        status_code: HttpStatus.OK,
+        message: 'Login successful',
+        data: responsePayload,
+      };
+    } catch (loginUserError) {
+      Logger.log('AuthenticationServiceError ~ loginUserError ~', loginUserError);
+      console.log(`${loginUserError}`);
+
       throw new HttpException(
         {
           message: ERROR_OCCURED,
